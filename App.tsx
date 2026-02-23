@@ -682,8 +682,8 @@ const CoachingSection = () => (
             <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-indigo-200">
               <HeartPulse className="text-white" size={32} />
             </div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Long-Term Health Support</h3>
-            <p className="text-indigo-600 font-semibold mb-6">Structured support for ongoing health goals</p>
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">Long-Term Health Programs</h3>
+            <p className="text-indigo-600 font-semibold mb-6">Structured guidance for ongoing health goals</p>
             <p className="text-slate-600 mb-8 leading-relaxed text-sm">
               GOQii offers focused programs to support employees managing long-term health challenges. These programs emphasize consistency, guidance, and practical lifestyle changes that employees can sustain over time.
             </p>
