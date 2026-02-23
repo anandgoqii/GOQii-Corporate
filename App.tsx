@@ -354,7 +354,7 @@ const WhatWeDo = () => {
   const carouselData = [
     {
       title: "Designed for Real Workdays",
-      tagline: "Support that fits into the flow of work",
+      tagline: "Healthy habits that fit into the flow of work",
       desc: "GOQii is built around how people actually work — between meetings, deadlines, and responsibilities. Support is available in small moments, without disrupting productivity.",
       icon: <Clock className="text-blue-600" size={32} />,
       image: "https://appcdn.goqii.com/storeimg/56521_1771503384.jpg"
@@ -472,27 +472,27 @@ const HowGOQiiSupports = () => {
   const categories = [
     {
       title: "Employee Assistance, Coaching & Engagement",
-      tagline: "Human support and everyday actions that fit naturally into work life",
-      desc: "GOQii brings together confidential support, coaching, and simple daily actions to help employees manage work, life, and routine pressures — without complexity or intrusion.",
+      tagline: "Human guidance and everyday actions that fit naturally into work life",
+      desc: "GOQii brings together confidential conversations, one-to-one coaching, and simple daily activities that help employees manage work, life, and routine pressures — without intrusion or complexity.",
       points: [
-        "Confidential emotional support (EAP)",
-        "One-to-one coaching and guidance",
-        "Support for stress and burnout",
-        "Everyday lifestyle and routine support",
+        "Confidential emotional conversations (EAP)",
+        "One-to-one personal and work coaching",
+        "Stress and burnout management",
+        "Everyday lifestyle and routine guidance",
         "Team activities and shared challenges"
       ],
       icon: <Activity className="text-blue-600" size={32} />,
       color: "bg-blue-50"
     },
     {
-      title: "Care & Insurance Support",
-      tagline: "Clear guidance and support for care and coverage needs",
-      desc: "GOQii helps employees navigate care-related needs and insurance questions with clarity and confidence, supported in a respectful and approachable way.",
+      title: "Chronic Care & Insurance Support",
+      tagline: "Clear direction for long-term health and coverage needs",
+      desc: "GOQii helps employees navigate ongoing health needs and insurance-related questions with clarity and confidence, in a respectful and easy-to-understand way.",
       points: [
-        "Support for ongoing care needs",
-        "Women’s and family support",
-        "Recovery and physiotherapy support",
-        "Care navigation and guidance",
+        "Support for long-term conditions like diabetes and obesity",
+        "Weight management and healthy routine programs",
+        "Women’s and family health support",
+        "Recovery and physiotherapy guidance",
         "Insurance and claims assistance"
       ],
       icon: <ShieldCheck className="text-purple-600" size={32} />,
@@ -500,14 +500,14 @@ const HowGOQiiSupports = () => {
     },
     {
       title: "Business Impact & ROI",
-      tagline: "Meaningful outcomes for organizations, without tracking individuals",
-      desc: "GOQii is designed to support people in ways that naturally strengthen teams and organizations — while always respecting employee privacy.",
+      tagline: "Clear outcomes for organizations, without tracking individuals",
+      desc: "GOQii is designed to strengthen teams and workplace consistency through participation and everyday engagement — while always respecting employee privacy.",
       points: [
-        "Stronger employee participation",
-        "Better focus and day-to-day energy",
-        "Reduced disruption from stress and burnout",
+        "Higher employee participation across programs",
+        "Better focus, energy, and day-to-day consistency",
+        "Reduced disruption from stress-related issues",
         "Clear visibility for HR on adoption and usage",
-        "Alignment between people experience and business goals"
+        "Better alignment between people experience and business goals"
       ],
       icon: <BarChart3 className="text-emerald-600" size={32} />,
       color: "bg-emerald-50"
@@ -532,7 +532,7 @@ const HowGOQiiSupports = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
           <div className="absolute bottom-12 left-12 right-12 text-white">
             <p className="text-2xl font-bold max-w-2xl leading-tight">
-              An integrated ecosystem that brings together human empathy and practical tools to support your team's everyday needs.
+              An integrated ecosystem that brings together human empathy and practical tools to enable your team's everyday needs.
             </p>
           </div>
         </div>
@@ -574,7 +574,7 @@ const Experience = () => {
   const items = [
     { 
       title: "Emotional Space", 
-      bold: "Support that feels safe, private, and approachable",
+      bold: "Space that feels safe, private, and approachable",
       desc: "Employees have access to confidential support that helps them manage stress, work pressures, and personal challenges. Conversations are human and judgment-free.", 
       icon: <Heart className="text-rose-500" />,
       image: "https://appcdn.goqii.com/storeimg/30975_1771504097.jpg"
@@ -606,7 +606,7 @@ const Experience = () => {
     <section className="py-24 max-w-7xl mx-auto px-6 border-t border-slate-100">
       <div className="text-center mb-16 max-w-3xl mx-auto">
         <h2 className="text-4xl font-bold text-slate-900 mb-6 text-balance">What Employees Experience</h2>
-        <h3 className="text-xl font-semibold text-blue-600 mb-4">Support That Fits into Everyday Work</h3>
+        <h3 className="text-xl font-semibold text-blue-600 mb-4">Healthy Habits that fits into everday work</h3>
         <p className="text-slate-600 leading-relaxed">
           GOQii is designed around real workdays — busy schedules, shifting priorities, and everyday pressures. The experience feels human, supportive, and easy to be part of.
         </p>
