@@ -307,9 +307,9 @@ const WhyGOQii = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20 max-w-3xl mx-auto">
           <span className="text-blue-600 font-extrabold tracking-widest text-sm uppercase mb-4 block">WHY GOQii</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">Support That Fits into Everyday Work</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">Built into the Flow of Work</h2>
           <p className="text-xl text-slate-600 leading-relaxed">
-            GOQii works quietly in the background, offering support that feels natural and easy to use throughout the workday.
+            GOQii integrates smoothly into everyday work life, enabling employees to engage effortlessly without added complexity.
           </p>
         </div>
 
@@ -403,10 +403,10 @@ const WhatWeDo = () => {
     <section id="what-we-do" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-3xl mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Supporting People at Work, Made Simple</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">People at Work, Made Simple</h2>
           <div className="space-y-6 text-xl text-slate-600 leading-relaxed">
             <p>
-              GOQii fits naturally into workdays by focusing on simple actions and human support, rather than complex programs or one-time initiatives.
+              GOQii fits naturally into workdays by focusing on simple actions and human guidance, rather than complex programs or one-time initiatives.
             </p>
           </div>
         </div>
@@ -518,7 +518,7 @@ const HowGOQiiSupports = () => {
     <section id="approach" className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 mb-4">How GOQii Supports Your Workforce</h2>
+          <h2 className="text-4xl font-bold text-slate-900 mb-4">How GOQii Works for Your Workforce</h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
         </div>
         
@@ -636,7 +636,7 @@ const CoachingSection = () => (
   <section className="py-24 bg-white border-t border-slate-100">
     <div className="max-w-7xl mx-auto px-6">
       <div className="max-w-3xl mb-16">
-        <h2 className="text-4xl font-bold text-slate-900 mb-6">Virtual Coaching & Ongoing Health Support</h2>
+        <h2 className="text-4xl font-bold text-slate-900 mb-6">Virtual Coaching & Long-Term Health Programs</h2>
         <p className="text-xl text-slate-600 leading-relaxed">
           GOQii extends everyday support through live, guided sessions and focused programs that help employees build strength, consistency, and healthier routines over time.
         </p>
