@@ -472,45 +472,45 @@ const HowGOQiiSupports = () => {
   const categories = [
     {
       title: "Employee Assistance, Coaching & Engagement",
-      tagline: "Human guidance and everyday actions that fit naturally into work life",
-      desc: "GOQii brings together confidential conversations, one-to-one coaching, and simple daily activities that help employees manage work, life, and routine pressures — without intrusion or complexity.",
+      tagline: "Human support that fits into everyday work life",
+      desc: "GOQii provides confidential guidance, practical coaching, and simple daily habits that help employees manage work and life — without complexity.",
       points: [
-        "Confidential emotional conversations (EAP)",
-        "One-to-one personal and work coaching",
-        "Stress and burnout management",
-        "Everyday lifestyle and routine guidance",
-        "Team activities and shared challenges"
+        "Confidential emotional support (EAP)",
+        "1:1 personal & work coaching",
+        "Stress & burnout management",
+        "Daily lifestyle guidance",
+        "Team challenges & shared activities"
       ],
-      icon: <Activity className="text-blue-600" size={32} />,
-      color: "bg-blue-50"
+      icon: <Users className="text-blue-600" size={32} strokeWidth={1.5} />,
+      color: "bg-gradient-to-br from-blue-50 to-blue-100/50"
     },
     {
       title: "Chronic Care & Insurance Support",
-      tagline: "Clear direction for long-term health and coverage needs",
-      desc: "GOQii helps employees navigate ongoing health needs and insurance-related questions with clarity and confidence, in a respectful and easy-to-understand way.",
+      tagline: "Clear guidance for long-term health needs",
+      desc: "GOQii helps employees manage ongoing conditions and insurance queries with clarity and confidence.",
       points: [
-        "Support for long-term conditions like diabetes and obesity",
-        "Weight management and healthy routine programs",
-        "Women’s and family health support",
-        "Recovery and physiotherapy guidance",
-        "Insurance and claims assistance"
+        "Diabetes & obesity programs",
+        "Weight & routine management",
+        "Women’s & family health",
+        "Recovery & physiotherapy guidance",
+        "Insurance & claims assistance"
       ],
-      icon: <ShieldCheck className="text-purple-600" size={32} />,
-      color: "bg-purple-50"
+      icon: <ShieldCheck className="text-purple-600" size={32} strokeWidth={1.5} />,
+      color: "bg-gradient-to-br from-purple-50 to-purple-100/50"
     },
     {
       title: "Business Impact & ROI",
-      tagline: "Clear outcomes for organizations, without tracking individuals",
-      desc: "GOQii is designed to strengthen teams and workplace consistency through participation and everyday engagement — while always respecting employee privacy.",
+      tagline: "Measurable outcomes — with full employee privacy",
+      desc: "GOQii strengthens teams through engagement and participation while respecting individual confidentiality.",
       points: [
-        "Higher employee participation across programs",
-        "Better focus, energy, and day-to-day consistency",
-        "Reduced disruption from stress-related issues",
-        "Clear visibility for HR on adoption and usage",
-        "Better alignment between people experience and business goals"
+        "Higher program participation",
+        "Improved focus & daily energy",
+        "Reduced stress-related disruption",
+        "Clear HR visibility on adoption",
+        "Better alignment between wellbeing & performance"
       ],
-      icon: <BarChart3 className="text-emerald-600" size={32} />,
-      color: "bg-emerald-50"
+      icon: <TrendingUp className="text-emerald-600" size={32} strokeWidth={1.5} />,
+      color: "bg-gradient-to-br from-emerald-50 to-emerald-100/50"
     }
   ];
 
@@ -562,7 +562,7 @@ const HowGOQiiSupports = () => {
 
         <div className="mt-20 max-w-4xl mx-auto text-center">
           <p className="text-xl text-slate-600 font-medium italic border-t border-slate-200 pt-8">
-            "One platform that supports people at work — and delivers meaningful value to organizations."
+            "Supporting employees through life’s pressures—so they can thrive at work and beyond."
           </p>
         </div>
       </div>
