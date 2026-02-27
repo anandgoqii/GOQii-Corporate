@@ -141,7 +141,7 @@ const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
   );
 };
 
-const Navbar = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
+const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCurrentPage: (page: string) => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -154,9 +154,12 @@ const Navbar = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <div className="flex items-center gap-2 md:gap-3">
+        <div 
+          className="flex items-center gap-2 md:gap-3 cursor-pointer"
+          onClick={() => setCurrentPage('home')}
+        >
           <img 
-            src="https://appcdn.goqii.com/storeimg/97203_1771501982.jpg" 
+            src="https://appcdn.goqii.com/storeimg/11830_1772190947.png" 
             alt="HealthEngage Logo" 
             className="h-10 md:h-12 w-auto object-contain" 
           />
@@ -856,13 +859,16 @@ const FinalCTA = ({ onOpenDemo }: { onOpenDemo: () => void }) => (
   </section>
 );
 
-const Footer = () => (
+const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => (
   <footer className="py-16 bg-slate-900 text-slate-400">
     <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
       <div className="md:col-span-1">
-        <div className="flex items-center gap-3 mb-6">
+        <div 
+          className="flex items-center gap-3 mb-6 cursor-pointer"
+          onClick={() => setCurrentPage('home')}
+        >
           <img 
-            src="https://appcdn.goqii.com/storeimg/97203_1771501982.jpg" 
+            src="https://appcdn.goqii.com/storeimg/11830_1772190947.png" 
             alt="HealthEngage Logo" 
             className="h-10 w-auto object-contain" 
           />
@@ -875,28 +881,28 @@ const Footer = () => (
       <div>
         <h4 className="text-white font-bold mb-6">Platform</h4>
         <ul className="space-y-4 text-sm">
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Emotional Wellbeing</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Physical Health</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Team Challenges</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Integrations</a></li>
+          <li><button onClick={() => setCurrentPage('emotional-wellbeing')} className="hover:text-blue-400 transition-colors text-left">Emotional Wellbeing</button></li>
+          <li><button onClick={() => setCurrentPage('physical-health')} className="hover:text-blue-400 transition-colors text-left">Physical Health</button></li>
+          <li><button onClick={() => setCurrentPage('team-challenges')} className="hover:text-blue-400 transition-colors text-left">Team Challenges</button></li>
+          <li><button onClick={() => setCurrentPage('integrations')} className="hover:text-blue-400 transition-colors text-left">Integrations</button></li>
         </ul>
       </div>
       <div>
         <h4 className="text-white font-bold mb-6">Company</h4>
         <ul className="space-y-4 text-sm">
-          <li><a href="#" className="hover:text-blue-400 transition-colors">About Us</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Careers</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Security</a></li>
+          <li><button onClick={() => setCurrentPage('about-us')} className="hover:text-blue-400 transition-colors text-left">About Us</button></li>
+          <li><button onClick={() => setCurrentPage('careers')} className="hover:text-blue-400 transition-colors text-left">Careers</button></li>
+          <li><button onClick={() => setCurrentPage('privacy-policy')} className="hover:text-blue-400 transition-colors text-left">Privacy Policy</button></li>
+          <li><button onClick={() => setCurrentPage('security')} className="hover:text-blue-400 transition-colors text-left">Security</button></li>
         </ul>
       </div>
       <div>
         <h4 className="text-white font-bold mb-6">Resources</h4>
         <ul className="space-y-4 text-sm">
-          <li><a href="#" className="hover:text-blue-400 transition-colors">HR Toolkit</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Case Studies</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Help Center</a></li>
-          <li><a href="#" className="hover:text-blue-400 transition-colors">Contact Support</a></li>
+          <li><button onClick={() => setCurrentPage('hr-toolkit')} className="hover:text-blue-400 transition-colors text-left">HR Toolkit</button></li>
+          <li><button onClick={() => setCurrentPage('case-studies')} className="hover:text-blue-400 transition-colors text-left">Case Studies</button></li>
+          <li><button onClick={() => setCurrentPage('help-center')} className="hover:text-blue-400 transition-colors text-left">Help Center</button></li>
+          <li><button onClick={() => setCurrentPage('contact-support')} className="hover:text-blue-400 transition-colors text-left">Contact Support</button></li>
         </ul>
       </div>
     </div>
@@ -1017,32 +1023,46 @@ const DemoAssistant = () => {
   );
 };
 
+import { ContentPage } from './content';
+
 // --- App Root ---
 
 export default function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
 
   const openDemo = () => setIsDemoModalOpen(true);
   const hideDemo = () => setIsDemoModalOpen(false);
 
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   return (
     <div className="min-h-screen selection:bg-blue-100 selection:text-blue-900">
-      <Navbar onOpenDemo={openDemo} />
+      <Navbar onOpenDemo={openDemo} setCurrentPage={setCurrentPage} />
       <main>
-        <Hero onOpenDemo={openDemo} />
-        <TrustMarquee />
-        <WhyGOQii onOpenDemo={openDemo} />
-        <WhatWeDo />
-        <HowGOQiiSupports />
-        <Experience />
-        <CoachingSection />
-        <HowItWorks />
-        <HRSection />
-        <EAPSection />
-        <WhoWeWorkWith />
-        <FinalCTA onOpenDemo={openDemo} />
+        {currentPage === 'home' ? (
+          <>
+            <Hero onOpenDemo={openDemo} />
+            <TrustMarquee />
+            <WhyGOQii onOpenDemo={openDemo} />
+            <WhatWeDo />
+            <HowGOQiiSupports />
+            <Experience />
+            <CoachingSection />
+            <HowItWorks />
+            <HRSection />
+            <EAPSection />
+            <WhoWeWorkWith />
+            <FinalCTA onOpenDemo={openDemo} />
+          </>
+        ) : (
+          <ContentPage pageId={currentPage} />
+        )}
       </main>
-      <Footer />
+      <Footer setCurrentPage={setCurrentPage} />
       <DemoAssistant />
       <DemoFormModal isOpen={isDemoModalOpen} onClose={hideDemo} />
     </div>
