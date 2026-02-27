@@ -3,7 +3,7 @@ import {
   Menu, X, MessageSquare, CheckCircle, ArrowRight, Heart, Users, ShieldCheck, 
   Smile, Zap, Send, Sparkles, LayoutDashboard,
   Lock, UserCircle, MousePointerClick, ChevronLeft, ChevronRight, Clock, Hand, TrendingUp,
-  Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse
+  Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse, Gift
 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 
@@ -452,9 +452,9 @@ const TrustMarquee = () => {
   ];
 
   return (
-    <section className="py-20 border-y border-slate-100 bg-white">
-      <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-        <h3 className="text-slate-400 font-bold text-xs uppercase tracking-[0.25em] mb-4">
+    <section className="py-10 md:py-12 border-y border-slate-100 bg-white">
+      <div className="max-w-7xl mx-auto px-6 mb-6 md:mb-8 text-center">
+        <h3 className="text-slate-400 font-bold text-xs uppercase tracking-[0.25em]">
           TRUSTED BY LEADING ORGANIZATIONS
         </h3>
       </div>
@@ -505,9 +505,9 @@ const WhyGOQii = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
   ];
 
   return (
-    <section className="py-24 bg-white border-b border-slate-100">
+    <section className="py-16 md:py-24 bg-white border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20 max-w-3xl mx-auto">
+        <div className="text-center mb-12 md:mb-20 max-w-3xl mx-auto">
           <span className="text-blue-600 font-extrabold tracking-widest text-sm uppercase mb-4 block">WHY GOQii</span>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">Built into the Flow of Work</h2>
           <p className="text-xl text-slate-600 leading-relaxed">
@@ -610,9 +610,9 @@ const WhatWeDo = () => {
   }, []);
 
   return (
-    <section id="what-we-do" className="py-24 bg-white overflow-hidden">
+    <section id="what-we-do" className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="max-w-3xl mb-16">
+        <div className="max-w-3xl mb-10 md:mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">People at Work, Made Simple</h2>
           <div className="space-y-6 text-xl text-slate-600 leading-relaxed">
             <p>
@@ -725,15 +725,15 @@ const HowGOQiiSupports = () => {
   ];
 
   return (
-    <section id="approach" className="py-24 bg-slate-50">
+    <section id="approach" className="py-16 md:py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">How GOQii Works for Your Workforce</h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
         </div>
         
         {/* Added Image Section within this section */}
-        <div className="mb-16 rounded-[3rem] overflow-hidden shadow-2xl h-[450px] relative group">
+        <div className="mb-10 md:mb-16 rounded-[3rem] overflow-hidden shadow-2xl h-[450px] relative group">
           <img 
             src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=2000" 
             alt="Supportive Workforce Collaboration" 
@@ -839,8 +839,8 @@ const Experience = () => {
   ];
 
   return (
-    <section className="py-24 max-w-7xl mx-auto px-6 border-t border-slate-100">
-      <div className="text-center mb-16 max-w-3xl mx-auto">
+    <section className="py-16 md:py-24 max-w-7xl mx-auto px-6 border-t border-slate-100">
+      <div className="text-center mb-10 md:mb-16 max-w-3xl mx-auto">
         <h2 className="text-4xl font-bold text-slate-900 mb-6 text-balance">What Employees Experience</h2>
         <h3 className="text-xl font-semibold text-blue-600 mb-4">Healthy Habits that Fit into Everyday Work</h3>
         <p className="text-slate-600 leading-relaxed">
@@ -888,9 +888,9 @@ const GamificationSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-white border-t border-slate-100">
+    <section className="py-16 md:py-24 bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
           <div>
             <h2 className="text-4xl font-bold text-slate-900 mb-6">Gamification & Rewards</h2>
             <h3 className="text-xl font-semibold text-blue-600 mb-6">Encouraging Participation Through Everyday Motivation</h3>
@@ -919,7 +919,7 @@ const GamificationSection = () => {
             <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl relative overflow-hidden flex flex-col h-full">
               <div className="h-64 w-full relative">
                 <img 
-                  src="https://picsum.photos/seed/gamification/800/600?blur=2" 
+                  src="https://appcdn.goqii.com/storeimg/62016_1772205315.png" 
                   alt="Gamification in Workplace" 
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
@@ -929,7 +929,7 @@ const GamificationSection = () => {
               <div className="p-10 relative bg-white flex-1">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
                 <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-8 -mt-16 relative z-10 shadow-lg border-4 border-white">
-                  <Sparkles size={32} />
+                  <Gift size={32} />
                 </div>
                 <h4 className="text-2xl font-bold text-slate-900 mb-4">Designed for Workplaces</h4>
                 <p className="text-lg text-slate-600 leading-relaxed">
@@ -967,9 +967,9 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-24 bg-slate-900 text-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-slate-900 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-16">How GOQii Comes Together in Three Steps</h2>
+        <h2 className="text-4xl font-bold mb-10 md:mb-16">How GOQii Comes Together in Three Steps</h2>
         <div className="grid md:grid-cols-3 gap-12 relative">
           <div className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-slate-800 z-0"></div>
           {steps.map((step, idx) => (
@@ -989,7 +989,7 @@ const HowItWorks = () => {
 };
 
 const EAPSection = () => (
-  <section className="py-24 bg-slate-50 border-y border-slate-100">
+  <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-100">
     <div className="max-w-4xl mx-auto px-6 text-center">
       <h2 className="text-4xl font-bold text-slate-900 mb-8">Support That Fits Your Workplace</h2>
       <p className="text-2xl text-slate-600 leading-relaxed italic">
@@ -1045,9 +1045,9 @@ const BusinessImpactSection = () => {
   };
 
   return (
-    <section className="py-24 bg-white border-t border-slate-100">
+    <section className="py-16 md:py-24 bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-10 md:mb-16 max-w-3xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-6">Business Impact & ROI</h2>
           <h3 className="text-xl font-semibold text-blue-600 mb-4">Clear outcomes organizations can see and measure</h3>
           <p className="text-slate-600 leading-relaxed">
@@ -1099,9 +1099,9 @@ const TestimonialSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-100">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16 max-w-3xl mx-auto">
+        <div className="text-center mb-10 md:mb-16 max-w-3xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-6">What Organizations Say About GOQii HealthEngage</h2>
           <h3 className="text-xl font-semibold text-blue-600 mb-4">Trusted by teams across industries</h3>
           <p className="text-slate-600 leading-relaxed">
@@ -1134,7 +1134,7 @@ const TestimonialSection = () => {
 };
 
 const FinalCTA = ({ onOpenDemo }: { onOpenDemo: () => void }) => (
-  <section className="py-32 relative overflow-hidden bg-blue-600">
+  <section className="py-20 md:py-32 relative overflow-hidden bg-blue-600">
     <div className="absolute inset-0 opacity-10">
       <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
