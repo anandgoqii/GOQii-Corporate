@@ -17,10 +17,46 @@ interface DemoModalProps {
 // --- Components ---
 
 const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
+  const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    companyName: '',
+    companySize: '',
+    interests: [] as string[],
+    role: '',
+    notes: ''
+  });
+
+  // Reset state when modal opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      setStep(1);
+      setSubmitted(false);
+      setFormData({
+        name: '',
+        email: '',
+        companyName: '',
+        companySize: '',
+        interests: [],
+        role: '',
+        notes: ''
+      });
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const handleNext = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(prev => prev + 1);
+  };
+
+  const handleBack = () => {
+    setStep(prev => prev - 1);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +68,25 @@ const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
     }, 1500);
   };
 
+  const toggleInterest = (interest: string) => {
+    setFormData(prev => ({
+      ...prev,
+      interests: prev.interests.includes(interest)
+        ? prev.interests.filter(i => i !== interest)
+        : [...prev.interests, interest]
+    }));
+  };
+
+  const companySizes = ['1–50', '51–200', '201–1,000', '1,000+'];
+  const interestOptions = [
+    'Employee Assistance & Coaching',
+    'Lifestyle & Everyday Habits',
+    'Virtual Coaching & Fitness',
+    'Chronic Care & Long-Term Health',
+    'Gamification & Rewards',
+    'Insurance & Care Navigation'
+  ];
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div 
@@ -41,20 +96,20 @@ const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
       <div className="relative bg-white w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors"
+          className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors z-10"
         >
           <X size={24} />
         </button>
 
         <div className="p-8 sm:p-12">
           {submitted ? (
-            <div className="text-center py-8">
+            <div className="text-center py-8 animate-in slide-in-from-bottom-4 duration-500">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600">
                 <CheckCircle size={40} />
               </div>
               <h2 className="text-3xl font-bold text-slate-900 mb-4">Request Received</h2>
               <p className="text-slate-600 mb-8">
-                Thank you for your interest in GOQii. One of our wellbeing experts will reach out to you within 24 hours to schedule your demo.
+                Thanks — our team will reach out with a demo tailored to your needs.
               </p>
               <button 
                 onClick={onClose}
@@ -64,76 +119,224 @@ const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
               </button>
             </div>
           ) : (
-            <>
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">Request a Demo</h2>
-                <p className="text-slate-600">See how GOQii can support your team's wellbeing and engagement.</p>
+            <div className="relative">
+              {/* Progress Indicator */}
+              <div className="mb-8 flex items-center justify-between">
+                <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Step {step} of 4</span>
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className={`h-1.5 rounded-full transition-all duration-300 ${i === step ? 'w-6 bg-blue-600' : i < step ? 'w-2 bg-blue-300' : 'w-2 bg-slate-200'}`} />
+                  ))}
+                </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider ml-1">Full Name</label>
-                    <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                      <input required type="text" placeholder="John Doe" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
-                    </div>
+              {/* Step 1 */}
+              {step === 1 && (
+                <div className="animate-in slide-in-from-right-8 fade-in duration-300">
+                  <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-slate-900 mb-2">Let’s start with you</h2>
+                    <p className="text-slate-600">Tell us a bit about who you are.<br/>This helps us tailor the demo to your workplace.</p>
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider ml-1">Work Email</label>
-                    <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                      <input required type="email" placeholder="john@company.com" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
-                    </div>
-                  </div>
-                </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-sm font-bold text-slate-500 uppercase tracking-wider ml-1">Company Name</label>
-                  <div className="relative">
-                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                    <input required type="text" placeholder="Acme Inc." className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider ml-1">Job Title</label>
-                    <div className="relative">
-                      <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                      <input required type="text" placeholder="HR Director" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
+                  <form onSubmit={handleNext} className="space-y-5">
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-bold text-slate-700 ml-1">Your Name</label>
+                      <input 
+                        required 
+                        type="text" 
+                        placeholder="First & Last Name" 
+                        value={formData.name}
+                        onChange={e => setFormData({...formData, name: e.target.value})}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900" 
+                      />
                     </div>
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider ml-1">Company Size</label>
-                    <div className="relative">
-                      <select className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 pl-4 pr-10 focus:ring-2 focus:ring-blue-500 outline-none appearance-none transition-all">
-                        <option>1-50</option>
-                        <option>51-200</option>
-                        <option>201-1000</option>
-                        <option>1000+</option>
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-bold text-slate-700 ml-1">Work Email</label>
+                      <input 
+                        required 
+                        type="email" 
+                        placeholder="you@company.com" 
+                        value={formData.email}
+                        onChange={e => setFormData({...formData, email: e.target.value})}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900" 
+                      />
                     </div>
-                  </div>
-                </div>
 
-                <button 
-                  disabled={loading}
-                  type="submit" 
-                  className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2 mt-4"
-                >
-                  {loading ? (
-                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  ) : (
-                    <>Submit Request <ArrowRight size={20} /></>
-                  )}
-                </button>
-                <p className="text-center text-[10px] text-slate-400 mt-4 leading-relaxed px-4">
-                  By clicking submit, you agree to our terms of service and acknowledge that your data will be handled in accordance with our privacy policy.
-                </p>
-              </form>
-            </>
+                    <div className="pt-4 flex items-center justify-between">
+                      <span className="text-xs text-slate-500 flex items-center gap-1.5">
+                        <ShieldCheck size={14} className="text-green-500" /> We’ll never spam you.
+                      </span>
+                      <button 
+                        type="submit" 
+                        className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md shadow-blue-200 flex items-center gap-2"
+                      >
+                        Next <ArrowRight size={18} />
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {/* Step 2 */}
+              {step === 2 && (
+                <div className="animate-in slide-in-from-right-8 fade-in duration-300">
+                  <div className="mb-8">
+                    <button onClick={handleBack} className="text-slate-400 hover:text-slate-600 mb-4 flex items-center gap-1 text-sm font-medium transition-colors">
+                      <ChevronLeft size={16} /> Back
+                    </button>
+                    <h2 className="text-3xl font-bold text-slate-900 mb-2">About your organization</h2>
+                    <p className="text-slate-600">Help us understand your workplace.</p>
+                  </div>
+
+                  <form onSubmit={handleNext} className="space-y-6">
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-bold text-slate-700 ml-1">Company Name</label>
+                      <input 
+                        required 
+                        type="text" 
+                        placeholder="Company Name" 
+                        value={formData.companyName}
+                        onChange={e => setFormData({...formData, companyName: e.target.value})}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <label className="text-sm font-bold text-slate-700 ml-1">Company Size <span className="text-slate-400 font-normal ml-1">(Select one)</span></label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {companySizes.map(size => (
+                          <div 
+                            key={size}
+                            onClick={() => setFormData({...formData, companySize: size})}
+                            className={`cursor-pointer border rounded-xl p-4 flex items-center gap-3 transition-all duration-200 ${
+                              formData.companySize === size 
+                                ? 'border-blue-500 bg-blue-50/50 shadow-sm' 
+                                : 'border-slate-200 hover:border-blue-200 hover:bg-slate-50'
+                            }`}
+                          >
+                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
+                              formData.companySize === size ? 'border-blue-500' : 'border-slate-300'
+                            }`}>
+                              {formData.companySize === size && <div className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-in zoom-in duration-200" />}
+                            </div>
+                            <span className={`font-medium ${formData.companySize === size ? 'text-blue-700' : 'text-slate-700'}`}>{size}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="pt-4 flex justify-end">
+                      <button 
+                        type="submit" 
+                        disabled={!formData.companySize}
+                        className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md shadow-blue-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Next <ArrowRight size={18} />
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {/* Step 3 */}
+              {step === 3 && (
+                <div className="animate-in slide-in-from-right-8 fade-in duration-300">
+                  <div className="mb-6">
+                    <button onClick={handleBack} className="text-slate-400 hover:text-slate-600 mb-4 flex items-center gap-1 text-sm font-medium transition-colors">
+                      <ChevronLeft size={16} /> Back
+                    </button>
+                    <h2 className="text-3xl font-bold text-slate-900 mb-2">What are you exploring right now?</h2>
+                    <p className="text-slate-600">Select what’s most relevant. You can choose more than one.</p>
+                  </div>
+
+                  <form onSubmit={handleNext} className="space-y-6">
+                    <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+                      {interestOptions.map(option => {
+                        const isSelected = formData.interests.includes(option);
+                        return (
+                          <div 
+                            key={option}
+                            onClick={() => toggleInterest(option)}
+                            className={`cursor-pointer border rounded-xl p-3.5 flex items-center gap-3 transition-all duration-200 ${
+                              isSelected 
+                                ? 'border-blue-500 bg-blue-50/50 shadow-sm' 
+                                : 'border-slate-200 hover:border-blue-200 hover:bg-slate-50'
+                            }`}
+                          >
+                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                              isSelected ? 'bg-blue-500 border-blue-500' : 'border-slate-300 bg-white'
+                            }`}>
+                              {isSelected && <CheckCircle size={14} className="text-white animate-in zoom-in duration-200" />}
+                            </div>
+                            <span className={`font-medium text-sm ${isSelected ? 'text-blue-700' : 'text-slate-700'}`}>{option}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2 flex justify-end">
+                      <button 
+                        type="submit" 
+                        className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md shadow-blue-200 flex items-center gap-2"
+                      >
+                        Next <ArrowRight size={18} />
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {/* Step 4 */}
+              {step === 4 && (
+                <div className="animate-in slide-in-from-right-8 fade-in duration-300">
+                  <div className="mb-8">
+                    <button onClick={handleBack} className="text-slate-400 hover:text-slate-600 mb-4 flex items-center gap-1 text-sm font-medium transition-colors">
+                      <ChevronLeft size={16} /> Back
+                    </button>
+                    <h2 className="text-3xl font-bold text-slate-900 mb-2">Almost done</h2>
+                  </div>
+
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-bold text-slate-700 ml-1">Your Role</label>
+                      <input 
+                        required 
+                        type="text" 
+                        placeholder="HR / People Ops / Benefits / Leadership / Other" 
+                        value={formData.role}
+                        onChange={e => setFormData({...formData, role: e.target.value})}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-bold text-slate-700 ml-1">Anything specific you’d like us to cover? <span className="text-slate-400 font-normal">(Optional)</span></label>
+                      <textarea 
+                        rows={3}
+                        placeholder="Tell us a bit more..." 
+                        value={formData.notes}
+                        onChange={e => setFormData({...formData, notes: e.target.value})}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-slate-900 resize-none" 
+                      />
+                    </div>
+
+                    <div className="pt-4">
+                      <button 
+                        disabled={loading}
+                        type="submit" 
+                        className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2"
+                      >
+                        {loading ? (
+                          <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        ) : (
+                          <>🎉 Request My Demo</>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -159,13 +362,10 @@ const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCur
           onClick={() => setCurrentPage('home')}
         >
           <img 
-            src="https://appcdn.goqii.com/storeimg/11830_1772190947.png" 
+            src="https://appcdn.goqii.com/storeimg/17315_1772198483.png" 
             alt="HealthEngage Logo" 
             className="h-8 sm:h-10 md:h-12 w-auto object-contain" 
           />
-          <span className="text-base sm:text-lg md:text-2xl font-bold tracking-tight text-slate-900">
-            HealthEngage <span className="hidden sm:inline">- Corporate</span>
-          </span>
         </div>
         
         <div className="flex items-center gap-4">
@@ -257,9 +457,6 @@ const TrustMarquee = () => {
         <h3 className="text-slate-400 font-bold text-xs uppercase tracking-[0.25em] mb-4">
           TRUSTED BY LEADING ORGANIZATIONS
         </h3>
-        <p className="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed">
-          Helping enterprises, financial institutions, and public sector teams across industries build a culture of wellbeing.
-        </p>
       </div>
 
       <div className="overflow-hidden relative whitespace-nowrap py-4">
@@ -404,6 +601,14 @@ const WhatWeDo = () => {
   const nextSlide = () => setActiveSlide((prev) => (prev + 1) % carouselData.length);
   const prevSlide = () => setActiveSlide((prev) => (prev - 1 + carouselData.length) % carouselData.length);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 5000); // Auto-scroll every 5 seconds
+    
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section id="what-we-do" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -490,7 +695,7 @@ const HowGOQiiSupports = () => {
       color: "bg-gradient-to-br from-blue-50 to-blue-100/50"
     },
     {
-      title: "Chronic Care & Insurance Support",
+      title: "Chronic Care",
       tagline: "Clear guidance for long-term health needs",
       desc: "GOQii helps employees manage ongoing conditions and insurance queries with clarity and confidence.",
       points: [
@@ -580,21 +785,21 @@ const Experience = () => {
     { 
       title: "Emotional Space", 
       bold: "Space that feels safe, private, and approachable",
-      desc: "Employees have access to confidential support that helps them manage stress, work pressures, and personal challenges. Conversations are human and judgment-free.", 
+      desc: "Employees have access to confidential conversations that help them manage stress, work pressures, and personal challenges. Conversations are human, respectful, and judgment-free.", 
       icon: <Heart className="text-rose-500" />,
       image: "https://appcdn.goqii.com/storeimg/30975_1771504097.jpg"
     },
     { 
       title: "Lifestyle Rhythm", 
       bold: "Guidance that fits real schedules, not ideal ones",
-      desc: "Employees receive practical guidance on sleep, energy, movement, and daily habits — designed to fit into busy workdays. Support adapts to how people live.", 
+      desc: "Employees receive practical guidance on sleep, energy, movement, and daily habits — designed to fit into busy workdays. The experience adapts to how people actually live and work.", 
       icon: <Zap className="text-amber-500" />,
       image: "https://appcdn.goqii.com/storeimg/66712_1771504222.jpg"
     },
     { 
       title: "Team Connection", 
       bold: "Shared moments that bring people together",
-      desc: "Light, low-pressure challenges and activities help teams connect naturally — whether they work remotely or in-office. This builds a sense of belonging.", 
+      desc: "Light, low-pressure challenges and activities help teams connect naturally — whether they work remotely or in-office. These shared moments build a sense of belonging across teams.", 
       icon: <Users className="text-blue-500" />,
       image: "https://appcdn.goqii.com/storeimg/88320_1771504506.jpg"
     },
@@ -604,6 +809,32 @@ const Experience = () => {
       desc: "Employees are guided by expert-led content that simplifies complex topics and filters out trends. Information is practical, relevant, and easy to apply.", 
       icon: <LayoutDashboard className="text-indigo-500" />,
       image: "https://appcdn.goqii.com/storeimg/16878_1771504536.jpg"
+    },
+    { 
+      title: "Virtual Coaching", 
+      bold: "Live, guided sessions employees can join from anywhere",
+      desc: "Employees can take part in live virtual sessions led by experienced coaches. Sessions are designed to fit busy schedules and support everyday movement, focus, and balance — without pressure or performance expectations.", 
+      icon: <Video className="text-blue-500" />,
+      image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800",
+      bullets: [
+        "Live fitness classes including cardio and strength training",
+        "Guided yoga and flexibility sessions",
+        "Meditation and breathing practices for focus and calm",
+        "Easy access from home or the workplace"
+      ]
+    },
+    { 
+      title: "Long-Term Health Programs", 
+      bold: "Structured guidance for ongoing health goals",
+      desc: "GOQii offers focused programs to help employees manage long-term health challenges. These programs emphasize consistency, guidance, and practical lifestyle changes that can be sustained over time.", 
+      icon: <HeartPulse className="text-indigo-500" />,
+      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800",
+      bullets: [
+        "Weight management and healthy routine support",
+        "Obesity management through guided programs",
+        "Support for managing long-term conditions",
+        "Lifestyle coaching focused on daily habits"
+      ]
     }
   ];
 
@@ -611,12 +842,12 @@ const Experience = () => {
     <section className="py-24 max-w-7xl mx-auto px-6 border-t border-slate-100">
       <div className="text-center mb-16 max-w-3xl mx-auto">
         <h2 className="text-4xl font-bold text-slate-900 mb-6 text-balance">What Employees Experience</h2>
-        <h3 className="text-xl font-semibold text-blue-600 mb-4">Healthy Habits that fits into everday work</h3>
+        <h3 className="text-xl font-semibold text-blue-600 mb-4">Healthy Habits that Fit into Everyday Work</h3>
         <p className="text-slate-600 leading-relaxed">
-          GOQii is designed around real workdays — busy schedules, shifting priorities, and everyday pressures. The experience feels human, supportive, and easy to be part of.
+          GOQii is designed around real workdays — busy schedules, shifting priorities, and everyday pressures. The experience feels human, approachable, and easy to be part of.
         </p>
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {items.map((item, idx) => (
           <div key={idx} className="rounded-[2.5rem] border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all group flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl">
             <div className="h-48 w-full overflow-hidden relative">
@@ -629,6 +860,16 @@ const Experience = () => {
               <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
               <p className="font-semibold text-slate-800 text-sm mb-3 leading-snug">{item.bold}</p>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+              {item.bullets && (
+                <ul className="mt-4 space-y-2">
+                  {item.bullets.map((bullet, i) => (
+                    <li key={i} className="flex items-start gap-2 text-slate-500 text-xs">
+                      <CheckCircle className="text-blue-500 shrink-0 mt-0.5" size={14} />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         ))}
@@ -637,80 +878,71 @@ const Experience = () => {
   );
 };
 
-const CoachingSection = () => (
-  <section className="py-24 bg-white border-t border-slate-100">
-    <div className="max-w-7xl mx-auto px-6">
-      <div className="max-w-3xl mb-16">
-        <h2 className="text-4xl font-bold text-slate-900 mb-6">Virtual Coaching & Long-Term Health Programs</h2>
-        <p className="text-xl text-slate-600 leading-relaxed">
-          GOQii extends everyday support through live, guided sessions and focused programs that help employees build strength, consistency, and healthier routines over time.
-        </p>
-      </div>
+const GamificationSection = () => {
+  const points = [
+    "Participation-led challenges that are easy to join",
+    "Points and milestones that recognize regular involvement",
+    "Rewards aligned with healthy routines and positive habits",
+    "Inclusive design suitable for all roles, ages, and fitness levels",
+    "No forced competition or public comparisons"
+  ];
 
-      <div className="grid lg:grid-cols-2 gap-12">
-        <div className="bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:shadow-xl transition-all group overflow-hidden flex flex-col">
-          <div className="h-64 w-full overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800" alt="Virtual Coaching" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
-          </div>
-          <div className="p-10 flex-1">
-            <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-200">
-              <Video className="text-white" size={32} />
-            </div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Virtual Coaching</h3>
-            <p className="text-blue-600 font-semibold mb-6">Live, guided sessions employees can join from anywhere</p>
-            <p className="text-slate-600 mb-8 leading-relaxed text-sm">
-              Employees can take part in live virtual sessions led by experienced coaches. Sessions are designed to fit busy schedules and support everyday movement, focus, and balance — without pressure or performance expectations.
+  return (
+    <section className="py-24 bg-white border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-4xl font-bold text-slate-900 mb-6">Gamification & Rewards</h2>
+            <h3 className="text-xl font-semibold text-blue-600 mb-6">Encouraging Participation Through Everyday Motivation</h3>
+            <p className="text-lg text-slate-600 leading-relaxed mb-6">
+              GOQii HealthEngage uses light gamification and meaningful rewards to encourage regular participation — making everyday actions more engaging without creating pressure or unhealthy competition.
             </p>
-            <ul className="space-y-4">
-              {[
-                "Live fitness classes including cardio and strength training",
-                "Guided yoga and flexibility sessions",
-                "Meditation and breathing practices for focus and calm",
-                "Easy access from home or the workplace"
-              ].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-slate-600 text-sm">
-                  <CheckCircle className="text-blue-500 shrink-0 mt-1" size={18} />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:shadow-xl transition-all group overflow-hidden flex flex-col">
-          <div className="h-64 w-full overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800" alt="Health Support" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
-          </div>
-          <div className="p-10 flex-1">
-            <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-indigo-200">
-              <HeartPulse className="text-white" size={32} />
-            </div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Long-Term Health Programs</h3>
-            <p className="text-indigo-600 font-semibold mb-6">Structured guidance for ongoing health goals</p>
-            <p className="text-slate-600 mb-8 leading-relaxed text-sm">
-              GOQii offers focused programs to support employees managing long-term health challenges. These programs emphasize consistency, guidance, and practical lifestyle changes that employees can sustain over time.
+            <p className="text-lg text-slate-600 leading-relaxed mb-10">
+              Rather than focusing on winners or rankings, the approach is designed to recognize consistency, effort, and involvement across the workforce.
             </p>
-            <ul className="space-y-4">
-              {[
-                "Weight management and healthy routine support",
-                "Obesity management through guided programs",
-                "Support for managing long-term conditions",
-                "Lifestyle coaching focused on daily habits"
-              ].map((item, idx) => (
-                <li key={idx} className="flex items-start gap-3 text-slate-600 text-sm">
-                  <CheckCircle className="text-indigo-500 shrink-0 mt-1" size={18} />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 mb-8">
+              <h4 className="text-xl font-bold text-slate-900 mb-6">How It Works</h4>
+              <ul className="space-y-4">
+                {points.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-slate-700">
+                    <CheckCircle className="text-blue-500 shrink-0 mt-1" size={20} />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          <div className="relative">
+            <div className="absolute inset-0 bg-blue-100 rounded-[3rem] transform translate-x-4 translate-y-4 -z-10"></div>
+            <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl relative overflow-hidden flex flex-col h-full">
+              <div className="h-64 w-full relative">
+                <img 
+                  src="https://picsum.photos/seed/gamification/800/600?blur=2" 
+                  alt="Gamification in Workplace" 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+              </div>
+              <div className="p-10 relative bg-white flex-1">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
+                <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-8 -mt-16 relative z-10 shadow-lg border-4 border-white">
+                  <Sparkles size={32} />
+                </div>
+                <h4 className="text-2xl font-bold text-slate-900 mb-4">Designed for Workplaces</h4>
+                <p className="text-lg text-slate-600 leading-relaxed">
+                  Gamification in GOQii HealthEngage is built to fit naturally into work life — motivating employees quietly and consistently, while helping organizations drive sustained participation across programs.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const HowItWorks = () => {
   const steps = [
@@ -737,7 +969,7 @@ const HowItWorks = () => {
   return (
     <section className="py-24 bg-slate-900 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-16">How GOQii Works</h2>
+        <h2 className="text-4xl font-bold mb-16">How GOQii Comes Together in Three Steps</h2>
         <div className="grid md:grid-cols-3 gap-12 relative">
           <div className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-slate-800 z-0"></div>
           {steps.map((step, idx) => (
@@ -756,41 +988,6 @@ const HowItWorks = () => {
   );
 };
 
-const HRSection = () => (
-  <section id="leadership" className="py-24 max-w-7xl mx-auto px-6 bg-white">
-    <div className="bg-blue-600 rounded-[3rem] overflow-hidden grid lg:grid-cols-2 shadow-2xl">
-      <div className="p-12 lg:p-20 text-white flex flex-col justify-center">
-        <h2 className="text-4xl font-bold mb-6 leading-tight">Designed for HR and Leadership Teams</h2>
-        <p className="text-xl text-blue-100 mb-10 leading-relaxed">
-          GOQii helps organizations support employee wellbeing without adding complexity.
-        </p>
-        <ul className="space-y-4">
-          {[
-            "Simple rollout", 
-            "Easy participation", 
-            "One platform for multiple needs", 
-            "Clear engagement visibility", 
-            "Employee privacy respected"
-          ].map((item, idx) => (
-            <li key={idx} className="flex items-center gap-3 text-lg text-blue-50">
-              <CheckCircle className="text-blue-200 shrink-0" size={24} />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="bg-blue-700/50 p-20 flex items-center justify-center relative">
-        <img 
-          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=1000" 
-          alt="HR Manager" 
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-        />
-        <Building2 size={200} className="text-white relative z-10 opacity-40" />
-      </div>
-    </div>
-  </section>
-);
-
 const EAPSection = () => (
   <section className="py-24 bg-slate-50 border-y border-slate-100">
     <div className="max-w-4xl mx-auto px-6 text-center">
@@ -802,38 +999,134 @@ const EAPSection = () => (
   </section>
 );
 
-const WhoWeWorkWith = () => {
-  const industries = [
-    "Enterprises and corporate teams",
-    "Financial services and insurers",
-    "Manufacturing and industrial organizations",
-    "Media and creative companies",
-    "Public sector and institutions"
+const BusinessImpactSection = () => {
+  const impacts = [
+    {
+      title: "Higher Employee Participation",
+      stat: "30–50%",
+      desc: "Participation grows steadily as programs fit naturally into everyday work.",
+      color: "blue"
+    },
+    {
+      title: "Improved Habit Consistency",
+      stat: "20–40%",
+      desc: "Employees are more likely to maintain routines when actions remain simple and achievable.",
+      color: "emerald"
+    },
+    {
+      title: "Reduced Stress-Related Disruption",
+      stat: "15–30%",
+      desc: "Regular access to guidance helps teams stay balanced and focused.",
+      color: "amber"
+    },
+    {
+      title: "Stronger Program Engagement",
+      stat: "25–45%",
+      desc: "Gamification and challenges drive ongoing participation across teams.",
+      color: "purple"
+    },
+    {
+      title: "Clear Visibility for HR",
+      stat: "Clear Insights",
+      desc: "Adoption and usage trends are visible in aggregate — without individual-level tracking.",
+      color: "orange"
+    }
+  ];
+
+  const getColorClasses = (color: string) => {
+    switch (color) {
+      case 'blue': return 'bg-blue-50 text-blue-600 border-blue-100';
+      case 'emerald': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
+      case 'amber': return 'bg-amber-50 text-amber-600 border-amber-100';
+      case 'purple': return 'bg-purple-50 text-purple-600 border-purple-100';
+      case 'orange': return 'bg-orange-50 text-orange-600 border-orange-100';
+      default: return 'bg-slate-50 text-slate-600 border-slate-100';
+    }
+  };
+
+  return (
+    <section className="py-24 bg-white border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-slate-900 mb-6">Business Impact & ROI</h2>
+          <h3 className="text-xl font-semibold text-blue-600 mb-4">Clear outcomes organizations can see and measure</h3>
+          <p className="text-slate-600 leading-relaxed">
+            Aggregated insights based on participation and program usage — without individual tracking.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {impacts.map((item, idx) => (
+            <div 
+              key={idx} 
+              className={`p-8 rounded-[2rem] border transition-all hover:shadow-lg flex flex-col h-full ${getColorClasses(item.color)}`}
+            >
+              <div className="mb-6">
+                <span className="text-4xl font-black tracking-tight opacity-90">{item.stat}</span>
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
+              <p className="text-slate-700 leading-relaxed flex-1">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const TestimonialSection = () => {
+  const testimonials = [
+    {
+      quote: "Easy to roll out and easy for employees to use",
+      text: "GOQii HealthEngage blended seamlessly into our workplace. Employees found it approachable, and participation grew without the need for constant reminders.",
+      author: "HR Leader",
+      company: "Global Enterprise"
+    },
+    {
+      quote: "Human-led and respectful of privacy",
+      text: "What stood out was the human guidance and the clear focus on employee privacy. It felt supportive without being intrusive.",
+      author: "People & Culture Head",
+      company: "Financial Services Organization"
+    },
+    {
+      quote: "A practical platform that works in real workdays",
+      text: "The platform focuses on small, consistent actions rather than big programs. That made a real difference in sustained participation.",
+      author: "Benefits Manager",
+      company: "Manufacturing Organization"
+    }
   ];
 
   return (
-    <section className="py-24 max-w-7xl mx-auto px-6 bg-white">
-      <div className="grid lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <h2 className="text-4xl font-bold text-slate-900 mb-12">Who We Work With</h2>
-          <div className="grid gap-4">
-            {industries.map((item, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
-                  <ShieldCheck size={20} />
-                </div>
-                <span className="text-xl font-medium text-slate-700">{item}</span>
-              </div>
-            ))}
-          </div>
+    <section className="py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-slate-900 mb-6">What Organizations Say About GOQii HealthEngage</h2>
+          <h3 className="text-xl font-semibold text-blue-600 mb-4">Trusted by teams across industries</h3>
+          <p className="text-slate-600 leading-relaxed">
+            Organizations choose GOQii HealthEngage for its people-first approach, ease of adoption, and ability to fit naturally into everyday work life.
+          </p>
         </div>
-        <div className="bg-slate-50 rounded-[3rem] p-20 flex items-center justify-center relative overflow-hidden">
-          <img 
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000" 
-            alt="Corporate Office" 
-            className="absolute inset-0 w-full h-full object-cover opacity-10"
-          />
-          <Users size={180} className="text-slate-200 relative z-10" />
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((item, idx) => (
+            <div key={idx} className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col h-full relative">
+              <div className="text-blue-500 mb-6 opacity-20">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.017 21L16.41 14.592C16.63 13.98 16.74 13.332 16.74 12.672V3H22V12.672C22 15.684 20.89 18.576 18.72 20.724L14.017 21ZM3.017 21L5.41 14.592C5.63 13.98 5.74 13.332 5.74 12.672V3H11V12.672C11 15.684 9.89 18.576 7.72 20.724L3.017 21Z" />
+                </svg>
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-4 leading-snug">“{item.quote}”</h4>
+              <p className="text-slate-600 leading-relaxed mb-8 flex-1">
+                {item.text}
+              </p>
+              <div className="mt-auto pt-6 border-t border-slate-100">
+                <p className="font-bold text-slate-900">{item.author}</p>
+                <p className="text-sm text-slate-500">{item.company}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -870,11 +1163,10 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
           onClick={() => setCurrentPage('home')}
         >
           <img 
-            src="https://appcdn.goqii.com/storeimg/94443_1772191721.png" 
+            src="https://appcdn.goqii.com/storeimg/25673_1772198622.png" 
             alt="HealthEngage Logo" 
             className="h-10 w-auto object-contain" 
           />
-          <span className="text-2xl font-bold tracking-tight text-white">HealthEngage</span>
         </div>
         <p className="text-sm leading-relaxed">
           The workplace wellbeing platform for modern organizations. Simple, engaging, and effective support for your entire team.
@@ -1053,11 +1345,11 @@ export default function App() {
             <WhatWeDo />
             <HowGOQiiSupports />
             <Experience />
-            <CoachingSection />
+            <GamificationSection />
             <HowItWorks />
-            <HRSection />
             <EAPSection />
-            <WhoWeWorkWith />
+            <BusinessImpactSection />
+            <TestimonialSection />
             <FinalCTA onOpenDemo={openDemo} />
           </>
         ) : (
