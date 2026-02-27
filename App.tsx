@@ -161,19 +161,21 @@ const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCur
           <img 
             src="https://appcdn.goqii.com/storeimg/11830_1772190947.png" 
             alt="HealthEngage Logo" 
-            className="h-10 md:h-12 w-auto object-contain" 
+            className="h-8 sm:h-10 md:h-12 w-auto object-contain" 
           />
-          <span className="text-lg md:text-2xl font-bold tracking-tight text-slate-900">HealthEngage - Corporate</span>
+          <span className="text-base sm:text-lg md:text-2xl font-bold tracking-tight text-slate-900">
+            HealthEngage <span className="hidden sm:inline">- Corporate</span>
+          </span>
         </div>
         
         <div className="flex items-center gap-4">
           <button 
             onClick={onOpenDemo}
-            className="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-all shadow-md shadow-blue-200"
+            className="hidden md:block bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-all shadow-md shadow-blue-200"
           >
             Request a Demo
           </button>
-          <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button className="md:hidden p-2 -mr-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={24} className="text-slate-600" /> : <Menu size={24} className="text-slate-600" />}
           </button>
         </div>
@@ -868,7 +870,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
           onClick={() => setCurrentPage('home')}
         >
           <img 
-            src="https://appcdn.goqii.com/storeimg/11830_1772190947.png" 
+            src="https://appcdn.goqii.com/storeimg/94443_1772191721.png" 
             alt="HealthEngage Logo" 
             className="h-10 w-auto object-contain" 
           />
