@@ -1279,6 +1279,12 @@ const BusinessImpactSection = () => {
       stat: "Clear Insights",
       desc: "Adoption and usage trends are visible in aggregate — without individual-level tracking.",
       color: "orange"
+    },
+    {
+      title: "Healthier Workplace Culture",
+      stat: "Positive Shift",
+      desc: "A supportive environment fosters a sense of belonging and boosts overall team morale.",
+      color: "rose"
     }
   ];
 
@@ -1289,6 +1295,7 @@ const BusinessImpactSection = () => {
       case 'amber': return 'bg-amber-50 text-amber-600 border-amber-100';
       case 'purple': return 'bg-purple-50 text-purple-600 border-purple-100';
       case 'orange': return 'bg-orange-50 text-orange-600 border-orange-100';
+      case 'rose': return 'bg-rose-50 text-rose-600 border-rose-100';
       default: return 'bg-slate-50 text-slate-600 border-slate-100';
     }
   };
