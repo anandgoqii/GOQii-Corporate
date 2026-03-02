@@ -5,6 +5,7 @@ import {
   Lock, UserCircle, MousePointerClick, ChevronLeft, ChevronRight, Clock, Hand, TrendingUp,
   Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse, Gift
 } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { GoogleGenAI } from "@google/genai";
 
 // --- Types ---
@@ -390,40 +391,132 @@ const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCur
   );
 };
 
-const Hero = ({ onOpenDemo }: { onOpenDemo: () => void }) => (
-  <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
-    <div className="absolute inset-0 z-0">
-      <img 
-        src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=2070" 
-        alt="Supportive workplace" 
-        className="w-full h-full object-cover brightness-[0.98]"
+const Hero = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 100]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -50]);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        videoRef.current?.pause();
+      } else {
+        videoRef.current?.play().catch(() => {});
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
+  return (
+    <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
+      {/* Animated Gradient Background */}
+      <motion.div 
+        className="absolute inset-0 z-0 opacity-40 bg-[length:400%_400%]"
+        animate={{
+          backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+        }}
+        transition={{
+          duration: 15,
+          ease: "linear",
+          repeat: Infinity,
+        }}
+        style={{
+          backgroundImage: 'linear-gradient(-45deg, #eff6ff, #dbeafe, #bfdbfe, #eff6ff)'
+        }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent"></div>
-    </div>
-    
-    <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
-      <div className="max-w-2xl">
-        <span className="inline-block text-blue-600 font-bold tracking-widest text-sm uppercase mb-4 px-4 py-2 bg-blue-50 rounded-full">
-          GOQii HEALTH ENGAGE
-        </span>
-        <h1 className="text-5xl md:text-6xl font-bold text-slate-900 leading-[1.15] mb-6">
-          Supporting People. Strengthening Teams.
-        </h1>
-        <p className="text-xl text-slate-600 leading-relaxed mb-10">
-          A simple platform that helps organizations support employees through human-led guidance, everyday actions, and care support — designed for real workdays.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <button 
-            onClick={onOpenDemo}
-            className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-2"
+      
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=2070"
+          className="w-full h-full object-cover brightness-[0.98] mix-blend-multiply"
+        >
+          {/* Placeholder video matching the calm, enterprise-grade tone */}
+          <source src="https://appcdn.goqii.com/storeimg/11261_1740985223.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent"></div>
+      </div>
+
+      {/* Floating UI Accents */}
+      <motion.div 
+        style={{ y: y1 }}
+        className="absolute right-[10%] top-[20%] z-10 hidden lg:flex items-center gap-3 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/50"
+      >
+        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+          <HeartPulse size={24} />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-slate-900">Daily Goal Met</p>
+          <p className="text-xs text-slate-500">Keep it up!</p>
+        </div>
+      </motion.div>
+
+      <motion.div 
+        style={{ y: y2 }}
+        className="absolute right-[25%] bottom-[25%] z-10 hidden lg:flex items-center gap-3 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/50"
+      >
+        <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+          <Users size={24} />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-slate-900">Team Challenge</p>
+          <p className="text-xs text-slate-500">3 days remaining</p>
+        </div>
+      </motion.div>
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+        <div className="max-w-2xl">
+          <motion.span 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="inline-block text-blue-600 font-bold tracking-widest text-sm uppercase mb-4 px-4 py-2 bg-blue-50 rounded-full"
           >
-            Request a Demo <ArrowRight size={20} />
-          </button>
+            GOQii HEALTH ENGAGE
+          </motion.span>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            className="text-5xl md:text-6xl font-bold text-slate-900 leading-[1.15] mb-6"
+          >
+            Supporting People. Strengthening Teams.
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            className="text-xl text-slate-600 leading-relaxed mb-10"
+          >
+            A simple platform that helps organizations support employees through human-led guidance, everyday actions, and care support — designed for real workdays.
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4"
+          >
+            <motion.button 
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={onOpenDemo}
+              className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 flex items-center justify-center gap-2"
+            >
+              Request a Demo <ArrowRight size={20} />
+            </motion.button>
+          </motion.div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const TrustMarquee = () => {
   const logos = [
@@ -840,39 +933,83 @@ const Experience = () => {
 
   return (
     <section className="py-16 md:py-24 max-w-7xl mx-auto px-6 border-t border-slate-100">
-      <div className="text-center mb-10 md:mb-16 max-w-3xl mx-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-10 md:mb-16 max-w-3xl mx-auto"
+      >
         <h2 className="text-4xl font-bold text-slate-900 mb-6 text-balance">What Employees Experience</h2>
         <h3 className="text-xl font-semibold text-blue-600 mb-4">Healthy Habits that Fit into Everyday Work</h3>
         <p className="text-slate-600 leading-relaxed">
           GOQii is designed around real workdays — busy schedules, shifting priorities, and everyday pressures. The experience feels human, approachable, and easy to be part of.
         </p>
-      </div>
+      </motion.div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {items.map((item, idx) => (
-          <div key={idx} className="rounded-[2.5rem] border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all group flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl">
-            <div className="h-48 w-full overflow-hidden relative">
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md">
-                {React.cloneElement(item.icon as React.ReactElement, { size: 20 })}
+        {items.map((item, idx) => {
+          const isSpecial = idx >= 4; // Virtual Coaching & Long-Term Health
+          return (
+            <motion.div 
+              key={idx} 
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="rounded-[2.5rem] border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition-all group flex flex-col h-full overflow-hidden shadow-sm hover:shadow-xl"
+            >
+              <div className="h-48 w-full overflow-hidden relative">
+                <motion.img 
+                  initial={isSpecial ? { x: idx === 4 ? -50 : 50, opacity: 0 } : false}
+                  whileInView={isSpecial ? { x: 0, opacity: 1 } : {}}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
+                  src={item.image} 
+                  alt={item.title} 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                />
+                <motion.div 
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.2 + idx * 0.1, type: "spring" }}
+                  className="absolute top-4 left-4 w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md"
+                >
+                  {React.cloneElement(item.icon as React.ReactElement, { size: 20 })}
+                </motion.div>
               </div>
-            </div>
-            <div className="p-8 flex flex-col flex-1">
-              <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
-              <p className="font-semibold text-slate-800 text-sm mb-3 leading-snug">{item.bold}</p>
-              <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-              {item.bullets && (
-                <ul className="mt-4 space-y-2">
-                  {item.bullets.map((bullet, i) => (
-                    <li key={i} className="flex items-start gap-2 text-slate-500 text-xs">
-                      <CheckCircle className="text-blue-500 shrink-0 mt-0.5" size={14} />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        ))}
+              <div className="p-8 flex flex-col flex-1">
+                <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
+                <p className="font-semibold text-slate-800 text-sm mb-3 leading-snug">{item.bold}</p>
+                <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                {item.bullets && (
+                  <ul className="mt-4 space-y-2">
+                    {item.bullets.map((bullet, i) => (
+                      <motion.li 
+                        key={i} 
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.3, delay: 0.4 + (i * 0.1) }}
+                        className="flex items-start gap-2 text-slate-500 text-xs"
+                      >
+                        <motion.div
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          whileInView={{ pathLength: 1, opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: 0.5 + (i * 0.1) }}
+                        >
+                          <CheckCircle className="text-blue-500 shrink-0 mt-0.5" size={14} />
+                        </motion.div>
+                        <span>{bullet}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );
@@ -891,7 +1028,12 @@ const GamificationSection = () => {
     <section className="py-16 md:py-24 bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
-          <div>
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+          >
             <h2 className="text-4xl font-bold text-slate-900 mb-6">Gamification & Rewards</h2>
             <h3 className="text-xl font-semibold text-blue-600 mb-6">Encouraging Participation Through Everyday Motivation</h3>
             <p className="text-lg text-slate-600 leading-relaxed mb-6">
@@ -905,16 +1047,29 @@ const GamificationSection = () => {
               <h4 className="text-xl font-bold text-slate-900 mb-6">How It Works</h4>
               <ul className="space-y-4">
                 {points.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-slate-700">
+                  <motion.li 
+                    key={idx} 
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    className="flex items-start gap-3 text-slate-700"
+                  >
                     <CheckCircle className="text-blue-500 shrink-0 mt-1" size={20} />
                     <span>{point}</span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
-          </div>
+          </motion.div>
           
-          <div className="relative">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="relative"
+          >
             <div className="absolute inset-0 bg-blue-100 rounded-[3rem] transform translate-x-4 translate-y-4 -z-10"></div>
             <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl relative overflow-hidden flex flex-col h-full">
               <div className="h-64 w-full relative">
@@ -925,19 +1080,60 @@ const GamificationSection = () => {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+                
+                {/* Sequential Badges */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.6 }}
+                  className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2"
+                >
+                  <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                  <span className="text-xs font-bold text-slate-900">7-Day Streak</span>
+                </motion.div>
+                
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.8 }}
+                  className="absolute bottom-16 left-12 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2"
+                >
+                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <span className="text-xs font-bold text-slate-900">Team Goal Met</span>
+                </motion.div>
               </div>
               <div className="p-10 relative bg-white flex-1">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
-                <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-8 -mt-16 relative z-10 shadow-lg border-4 border-white">
-                  <Gift size={32} />
-                </div>
+                <motion.div 
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-8 -mt-16 relative z-10 shadow-lg shadow-amber-500/20 border-4 border-white"
+                >
+                  <Gift size={28} />
+                  <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none scale-110" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="6" className="text-amber-200/50" />
+                    <motion.circle 
+                      cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="6" className="text-amber-500"
+                      strokeDasharray="289"
+                      initial={{ strokeDashoffset: 289 }}
+                      whileInView={{ strokeDashoffset: 289 * 0.25 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.5, delay: 0.6, ease: "easeOut" }}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </motion.div>
                 <h4 className="text-2xl font-bold text-slate-900 mb-4">Designed for Workplaces</h4>
                 <p className="text-lg text-slate-600 leading-relaxed">
                   Gamification in GOQii HealthEngage is built to fit naturally into work life — motivating employees quietly and consistently, while helping organizations drive sustained participation across programs.
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -999,6 +1195,59 @@ const EAPSection = () => (
   </section>
 );
 
+const CountUp = ({ value }: { value: string }) => {
+  const [count, setCount] = useState("0");
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = React.useRef(null);
+  
+  useEffect(() => {
+    if (!ref.current || hasAnimated) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true);
+          
+          // Simple animation for ranges like "30-50%" or "Clear Insights"
+          if (value.includes("–") || value.includes("-")) {
+            const parts = value.split(/[-–]/);
+            const end1 = parseInt(parts[0]);
+            const end2 = parseInt(parts[1]);
+            const suffix = value.replace(/[0-9–-]/g, '');
+            
+            let start = 0;
+            const duration = 1500;
+            const stepTime = 30;
+            const steps = duration / stepTime;
+            
+            const timer = setInterval(() => {
+              start += 1;
+              const progress = start / steps;
+              const current1 = Math.floor(end1 * progress);
+              const current2 = Math.floor(end2 * progress);
+              
+              if (start >= steps) {
+                setCount(value);
+                clearInterval(timer);
+              } else {
+                setCount(`${current1}–${current2}${suffix}`);
+              }
+            }, stepTime);
+          } else {
+            setCount(value);
+          }
+        }
+      },
+      { threshold: 0.5 }
+    );
+    
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [value, hasAnimated]);
+
+  return <span ref={ref}>{hasAnimated ? count : (value.includes("–") || value.includes("-") ? "0%" : value)}</span>;
+};
+
 const BusinessImpactSection = () => {
   const impacts = [
     {
@@ -1057,18 +1306,31 @@ const BusinessImpactSection = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {impacts.map((item, idx) => (
-            <div 
+            <motion.div 
               key={idx} 
-              className={`p-8 rounded-[2rem] border transition-all hover:shadow-lg flex flex-col h-full ${getColorClasses(item.color)}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className={`p-8 rounded-[2rem] border transition-all hover:shadow-lg flex flex-col h-full relative overflow-hidden ${getColorClasses(item.color)}`}
             >
-              <div className="mb-6">
-                <span className="text-4xl font-black tracking-tight opacity-90">{item.stat}</span>
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.2 + idx * 0.1, ease: "easeOut" }}
+                className="absolute bottom-0 left-0 h-1.5 bg-current opacity-20 origin-left w-full"
+              />
+              <div className="mb-6 relative">
+                <span className="text-4xl font-black tracking-tight opacity-90">
+                  <CountUp value={item.stat} />
+                </span>
               </div>
               <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
               <p className="text-slate-700 leading-relaxed flex-1">
                 {item.desc}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -1095,38 +1357,60 @@ const TestimonialSection = () => {
       text: "The platform focuses on small, consistent actions rather than big programs. That made a real difference in sustained participation.",
       author: "Benefits Manager",
       company: "Manufacturing Organization"
+    },
+    {
+      quote: "Seamless integration with our existing benefits",
+      text: "The platform didn't feel like another app to manage. It integrated perfectly with our existing benefits and provided a unified experience for our team.",
+      author: "VP of Total Rewards",
+      company: "Technology Firm"
     }
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-100">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10 md:mb-16 max-w-3xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-10 md:mb-16 max-w-3xl mx-auto"
+        >
           <h2 className="text-4xl font-bold text-slate-900 mb-6">What Organizations Say About GOQii HealthEngage</h2>
           <h3 className="text-xl font-semibold text-blue-600 mb-4">Trusted by teams across industries</h3>
           <p className="text-slate-600 leading-relaxed">
             Organizations choose GOQii HealthEngage for its people-first approach, ease of adoption, and ability to fit naturally into everyday work life.
           </p>
-        </div>
+        </motion.div>
         
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((item, idx) => (
-            <div key={idx} className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col h-full relative">
-              <div className="text-blue-500 mb-6 opacity-20">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M14.017 21L16.41 14.592C16.63 13.98 16.74 13.332 16.74 12.672V3H22V12.672C22 15.684 20.89 18.576 18.72 20.724L14.017 21ZM3.017 21L5.41 14.592C5.63 13.98 5.74 13.332 5.74 12.672V3H11V12.672C11 15.684 9.89 18.576 7.72 20.724L3.017 21Z" />
-                </svg>
-              </div>
-              <h4 className="text-xl font-bold text-slate-900 mb-4 leading-snug">“{item.quote}”</h4>
-              <p className="text-slate-600 leading-relaxed mb-8 flex-1">
-                {item.text}
-              </p>
-              <div className="mt-auto pt-6 border-t border-slate-100">
-                <p className="font-bold text-slate-900">{item.author}</p>
-                <p className="text-sm text-slate-500">{item.company}</p>
-              </div>
+        <div className="relative -mx-6 px-6">
+          <div className="flex overflow-hidden group">
+            <div 
+              className="flex gap-8 animate-marquee"
+              style={{ width: "max-content", animationDuration: "40s" }}
+            >
+              {[...testimonials, ...testimonials, ...testimonials].map((item, idx) => (
+                <div key={idx} className="w-[350px] md:w-[450px] shrink-0 bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col h-full relative">
+                  <div className="text-blue-500 mb-6 opacity-20">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14.017 21L16.41 14.592C16.63 13.98 16.74 13.332 16.74 12.672V3H22V12.672C22 15.684 20.89 18.576 18.72 20.724L14.017 21ZM3.017 21L5.41 14.592C5.63 13.98 5.74 13.332 5.74 12.672V3H11V12.672C11 15.684 9.89 18.576 7.72 20.724L3.017 21Z" />
+                    </svg>
+                  </div>
+                  <h4 className="text-xl font-bold text-slate-900 mb-4 leading-snug">“{item.quote}”</h4>
+                  <p className="text-slate-600 leading-relaxed mb-8 flex-1">
+                    {item.text}
+                  </p>
+                  <div className="mt-auto pt-6 border-t border-slate-100">
+                    <p className="font-bold text-slate-900">{item.author}</p>
+                    <p className="text-sm text-slate-500">{item.company}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          {/* Gradient Fades */}
+          <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-slate-50 to-transparent pointer-events-none z-10"></div>
+          <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-white to-transparent pointer-events-none z-10"></div>
         </div>
       </div>
     </section>
