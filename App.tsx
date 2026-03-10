@@ -3,7 +3,7 @@ import {
   Menu, X, MessageSquare, CheckCircle, ArrowRight, Heart, Users, ShieldCheck, 
   Smile, Zap, Send, Sparkles, LayoutDashboard,
   Lock, UserCircle, MousePointerClick, ChevronLeft, ChevronRight, Clock, Hand, TrendingUp,
-  Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse, Gift, Trophy
+  Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse, Gift, Trophy, Download
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { GoogleGenAI } from "@google/genai";
@@ -344,6 +344,136 @@ const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
   );
 };
 
+const ReportFormModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    employees: ''
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      setSubmitted(false);
+      setFormData({ name: '', email: '', employees: '' });
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+      window.open("https://appcdn.goqii.com/storeimg/81142_1773153861.pdf", "_blank");
+    }, 1500);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div 
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+        onClick={onClose}
+      />
+      <div className="relative bg-white w-full max-w-md rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        <button 
+          onClick={onClose}
+          className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors z-10"
+        >
+          <X size={24} />
+        </button>
+
+        <div className="p-8 sm:p-10">
+          {submitted ? (
+            <div className="text-center py-8 animate-in slide-in-from-bottom-4 duration-500">
+              <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle size={40} />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Your report is downloading.</h3>
+              <p className="text-slate-600 mb-8">
+                A copy has also been sent to your email.
+              </p>
+              <button 
+                onClick={onClose}
+                className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-slate-800 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          ) : (
+            <div className="animate-in slide-in-from-right-4 duration-300">
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Download the Report</h3>
+                <p className="text-slate-600">
+                  Enter your details to receive the GOQii HealthEngage report.
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Full Name</label>
+                  <input 
+                    type="text" 
+                    required
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                    placeholder="Jane Doe"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Work Email</label>
+                  <input 
+                    type="email" 
+                    required
+                    value={formData.email}
+                    onChange={e => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                    placeholder="jane@company.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Number of Employees</label>
+                  <select 
+                    required
+                    value={formData.employees}
+                    onChange={e => setFormData({...formData, employees: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all bg-white"
+                  >
+                    <option value="" disabled>Select size...</option>
+                    <option value="1-50">1-50</option>
+                    <option value="51-200">51-200</option>
+                    <option value="201-1000">201-1,000</option>
+                    <option value="1000+">1,000+</option>
+                  </select>
+                </div>
+
+                <button 
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-colors mt-8 flex items-center justify-center gap-2 disabled:opacity-70"
+                >
+                  {loading ? (
+                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Download size={20} />
+                      Download Report
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCurrentPage: (page: string) => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -585,7 +715,7 @@ const TrustMarquee = () => {
   );
 };
 
-const WhyGOQii = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
+const WhyGOQii = ({ onOpenReport }: { onOpenReport: () => void }) => {
   const points = [
     {
       title: "Trust-Owned",
@@ -653,14 +783,17 @@ const WhyGOQii = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
 
         <div className="mt-20 p-12 rounded-[3rem] bg-blue-50 border border-blue-100 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-xl">
-            <h4 className="text-2xl font-bold text-blue-900 mb-2">Ready to evolve your workplace?</h4>
-            <p className="text-blue-700 font-medium">GOQii helps build a culture where support is part of everyday work, not an extra task to manage.</p>
+            <h4 className="text-2xl font-bold text-blue-900 mb-2">Workplace Health & Engagement Report</h4>
+            <p className="text-blue-700 font-medium">
+              Practical insights on improving employee health, participation, and workplace performance.
+            </p>
           </div>
           <button 
-            onClick={onOpenDemo}
-            className="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 shrink-0"
+            onClick={onOpenReport}
+            className="bg-blue-600 text-white px-8 py-4 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 shrink-0 flex items-center gap-2"
           >
-            See the Difference
+            <Download size={20} />
+            Download the Report
           </button>
         </div>
       </div>
@@ -929,28 +1062,28 @@ const Experience = () => {
     },
     { 
       title: "Virtual Coaching", 
-      bold: "Live, guided sessions employees can join from anywhere",
-      desc: "Employees can take part in live virtual sessions led by experienced coaches. Sessions are designed to fit busy schedules and support everyday movement, focus, and balance — without pressure or performance expectations.", 
+      bold: "Live sessions employees can join from anywhere",
+      desc: "Employees can take part in live virtual sessions led by experienced coaches, designed to fit easily into busy schedules.", 
       icon: <Video className="text-blue-500" />,
       image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800",
       bullets: [
-        "Live fitness classes including cardio and strength training",
-        "Guided yoga and flexibility sessions",
-        "Meditation and breathing practices for focus and calm",
-        "Easy access from home or the workplace"
+        "Cardio and strength sessions",
+        "Yoga and flexibility classes",
+        "Meditation and breathing practices",
+        "Access from home or workplace"
       ]
     },
     { 
       title: "Long-Term Health Programs", 
-      bold: "Structured guidance for ongoing health goals",
-      desc: "GOQii offers focused programs to help employees manage long-term health challenges. These programs emphasize consistency, guidance, and practical lifestyle changes that can be sustained over time.", 
+      bold: "Guidance for ongoing health goals",
+      desc: "Structured programs that help employees manage long-term health conditions through practical lifestyle guidance.", 
       icon: <HeartPulse className="text-indigo-500" />,
       image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=800",
       bullets: [
-        "Weight management and healthy routine support",
-        "Obesity management through guided programs",
-        "Support for managing long-term conditions",
-        "Lifestyle coaching focused on daily habits"
+        "Weight and routine management",
+        "Obesity support programs",
+        "Long-term condition support",
+        "Daily lifestyle coaching"
       ]
     }
   ];
@@ -1071,7 +1204,7 @@ const HowItWorks = () => {
           transition={{ duration: 0.6 }}
           className="text-4xl font-bold mb-10 md:mb-16"
         >
-          How GOQii Comes Together in Three Steps
+          How GOQii HealthEngage Works in Three Simple Steps
         </motion.h2>
         <div className="grid md:grid-cols-3 gap-12 relative">
           <motion.div 
@@ -1109,23 +1242,6 @@ const HowItWorks = () => {
     </section>
   );
 };
-
-const EAPSection = () => (
-  <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-100">
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="max-w-4xl mx-auto px-6 text-center"
-    >
-      <h2 className="text-4xl font-bold text-slate-900 mb-8">Support That Fits Your Workplace</h2>
-      <p className="text-2xl text-slate-600 leading-relaxed italic">
-        "GOQii brings together employee assistance, everyday activities, and human support into one simple experience — making it easier for employees to seek help and for organizations to offer meaningful initiatives."
-      </p>
-    </motion.div>
-  </section>
-);
 
 const CountUp = ({ value }: { value: string }) => {
   const [count, setCount] = useState("0");
@@ -1560,10 +1676,14 @@ import { ContentPage } from './content';
 
 export default function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
 
   const openDemo = () => setIsDemoModalOpen(true);
   const hideDemo = () => setIsDemoModalOpen(false);
+  
+  const openReport = () => setIsReportModalOpen(true);
+  const hideReport = () => setIsReportModalOpen(false);
 
   // Scroll to top when page changes
   useEffect(() => {
@@ -1578,12 +1698,11 @@ export default function App() {
           <>
             <Hero onOpenDemo={openDemo} />
             <TrustMarquee />
-            <WhyGOQii onOpenDemo={openDemo} />
+            <WhyGOQii onOpenReport={openReport} />
             <WhatWeDo />
             <HowGOQiiSupports />
             <Experience />
             <HowItWorks />
-            <EAPSection />
             <BusinessImpactSection />
             <TestimonialSection />
             <FinalCTA onOpenDemo={openDemo} />
@@ -1595,6 +1714,7 @@ export default function App() {
       <Footer setCurrentPage={setCurrentPage} />
       <DemoAssistant />
       <DemoFormModal isOpen={isDemoModalOpen} onClose={hideDemo} />
+      <ReportFormModal isOpen={isReportModalOpen} onClose={hideReport} />
     </div>
   );
 }
