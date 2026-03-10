@@ -3,7 +3,7 @@ import {
   Menu, X, MessageSquare, CheckCircle, ArrowRight, Heart, Users, ShieldCheck, 
   Smile, Zap, Send, Sparkles, LayoutDashboard,
   Lock, UserCircle, MousePointerClick, ChevronLeft, ChevronRight, Clock, Hand, TrendingUp,
-  Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse, Gift
+  Building2, Mail, User, Briefcase, ChevronDown, BarChart3, Activity, Video, HeartPulse, Gift, Trophy
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { GoogleGenAI } from "@google/genai";
@@ -84,7 +84,6 @@ const DemoFormModal = ({ isOpen, onClose }: DemoModalProps) => {
     'Lifestyle & Everyday Habits',
     'Virtual Coaching & Fitness',
     'Chronic Care & Long-Term Health',
-    'Gamification & Rewards',
     'Insurance & Care Navigation'
   ];
 
@@ -356,7 +355,12 @@ const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCur
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}
+    >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div 
           className="flex items-center gap-2 md:gap-3 cursor-pointer"
@@ -370,12 +374,14 @@ const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCur
         </div>
         
         <div className="flex items-center gap-4">
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onOpenDemo}
-            className="hidden md:block bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-all shadow-md shadow-blue-200"
+            className="hidden md:block bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors shadow-md shadow-blue-200"
           >
             Request a Demo
-          </button>
+          </motion.button>
           <button className="md:hidden p-2 -mr-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={24} className="text-slate-600" /> : <Menu size={24} className="text-slate-600" />}
           </button>
@@ -383,11 +389,15 @@ const Navbar = ({ onOpenDemo, setCurrentPage }: { onOpenDemo: () => void, setCur
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 p-6 flex flex-col gap-4 shadow-xl">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-slate-100 p-6 flex flex-col gap-4 shadow-xl"
+        >
           <button onClick={() => { onOpenDemo(); setMobileMenuOpen(false); }} className="bg-blue-600 text-white w-full py-3 rounded-full font-semibold">Request a Demo</button>
-        </div>
+        </motion.div>
       )}
-    </nav>
+    </motion.nav>
   );
 };
 
@@ -495,7 +505,7 @@ const Hero = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
             className="text-xl text-slate-600 leading-relaxed mb-10"
           >
-            A simple platform that helps organizations support employees through human-led guidance, everyday actions, and care support — designed for real workdays.
+            A simplified platform that helps organizations enhance employee health, engagement, and everyday work life.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -545,7 +555,13 @@ const TrustMarquee = () => {
   ];
 
   return (
-    <section className="py-10 md:py-12 border-y border-slate-100 bg-white">
+    <motion.section 
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="py-10 md:py-12 border-y border-slate-100 bg-white"
+    >
       <div className="max-w-7xl mx-auto px-6 mb-6 md:mb-8 text-center">
         <h3 className="text-slate-400 font-bold text-xs uppercase tracking-[0.25em]">
           TRUSTED BY LEADING ORGANIZATIONS
@@ -565,7 +581,7 @@ const TrustMarquee = () => {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
@@ -573,27 +589,35 @@ const WhyGOQii = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
   const points = [
     {
       title: "Trust-Owned",
-      bold: "Personal information stays with the employee. Always.",
-      desc: "Employees are in control of their own data. GOQii is built on trust, with clear boundaries that respect privacy.",
+      bold: "Personal information stays with the employee.",
+      desc: "Employees remain in control of their own data. GOQii HealthEngage is built on trust and respects employee privacy.",
       icon: <Lock className="text-blue-600" size={28} />,
       bgColor: "bg-blue-100/50",
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800"
     },
     {
       title: "Human-Led",
-      bold: "Guidance from real people, not just messages.",
-      desc: "Employees are supported by experienced coaches who understand work challenges. Empathetic and meaningful.",
+      bold: "Guidance from real people.",
+      desc: "Employees receive support from experienced coaches who understand everyday work challenges.",
       icon: <UserCircle className="text-indigo-600" size={28} />,
       bgColor: "bg-indigo-100/50",
       image: "https://appcdn.goqii.com/storeimg/86122_1771502251.jpg"
     },
     {
       title: "Simple Actions",
-      bold: "Small habits that fit into busy workdays.",
-      desc: "Support delivered through short, practical actions. Simple moments to reset without disrupting work.",
+      bold: "Small habits that fit into workdays.",
+      desc: "Short, practical actions help employees reset energy and stay balanced during busy workdays.",
       icon: <MousePointerClick className="text-emerald-600" size={28} />,
       bgColor: "bg-emerald-100/50",
       image: "https://appcdn.goqii.com/storeimg/67213_1771503055.jpg"
+    },
+    {
+      title: "Gamified Participation",
+      bold: "Engaging activities that motivate participation.",
+      desc: "Challenges, milestones, and rewards encourage employees to stay involved and build healthy routines.",
+      icon: <Trophy className="text-amber-600" size={28} />,
+      bgColor: "bg-amber-100/50",
+      image: "https://appcdn.goqii.com/storeimg/62016_1772205315.png"
     }
   ];
 
@@ -602,26 +626,26 @@ const WhyGOQii = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12 md:mb-20 max-w-3xl mx-auto">
           <span className="text-blue-600 font-extrabold tracking-widest text-sm uppercase mb-4 block">WHY GOQii</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">Built into the Flow of Work</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">Because Support Is a Culture, Not a Task</h2>
           <p className="text-xl text-slate-600 leading-relaxed">
-            GOQii integrates smoothly into everyday work life, enabling employees to engage effortlessly without added complexity.
+            GOQii HealthEngage fits naturally into everyday work life, helping organizations support employees without adding pressure or complexity.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {points.map((item, idx) => (
             <div key={idx} className="relative rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500 group overflow-hidden flex flex-col">
-              <div className="h-56 w-full overflow-hidden relative">
+              <div className="h-48 w-full overflow-hidden relative">
                 <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
               </div>
-              <div className="p-10 flex-1">
-                <div className={`${item.bgColor} w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-inner`}>
+              <div className="p-8 flex-1">
+                <div className={`${item.bgColor} w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-inner`}>
                   {item.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-4">{item.title}</h3>
-                <p className="font-bold text-blue-600 text-sm mb-4 tracking-tight uppercase">{item.bold}</p>
-                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
+                <p className="font-bold text-blue-600 text-xs mb-3 tracking-tight uppercase">{item.bold}</p>
+                <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -775,42 +799,42 @@ const HowGOQiiSupports = () => {
   const categories = [
     {
       title: "Employee Assistance, Coaching & Engagement",
-      tagline: "Human support that fits into everyday work life",
-      desc: "GOQii provides confidential guidance, practical coaching, and simple daily habits that help employees manage work and life — without complexity.",
+      tagline: "Human guidance that fits naturally into everyday work",
+      desc: "GOQii HealthEngage helps employees manage work pressures and daily routines through confidential support, coaching, and simple engagement activities.",
       points: [
         "Confidential emotional support (EAP)",
-        "1:1 personal & work coaching",
-        "Stress & burnout management",
-        "Daily lifestyle guidance",
-        "Team challenges & shared activities"
+        "1:1 personal and work coaching",
+        "Stress and burnout support",
+        "Everyday lifestyle guidance",
+        "Team challenges and activities"
       ],
       icon: <Users className="text-blue-600" size={32} strokeWidth={1.5} />,
       color: "bg-gradient-to-br from-blue-50 to-blue-100/50"
     },
     {
       title: "Chronic Care",
-      tagline: "Clear guidance for long-term health needs",
-      desc: "GOQii helps employees manage ongoing conditions and insurance queries with clarity and confidence.",
+      tagline: "Guidance for ongoing health needs",
+      desc: "GOQii HealthEngage helps employees manage long-term health conditions through structured programs and care guidance.",
       points: [
-        "Diabetes & obesity programs",
-        "Weight & routine management",
-        "Women’s & family health",
-        "Recovery & physiotherapy guidance",
-        "Insurance & claims assistance"
+        "Diabetes and obesity programs",
+        "Weight and routine management",
+        "Women’s and family health support",
+        "Recovery and physiotherapy guidance",
+        "Insurance and claims assistance"
       ],
       icon: <ShieldCheck className="text-purple-600" size={32} strokeWidth={1.5} />,
       color: "bg-gradient-to-br from-purple-50 to-purple-100/50"
     },
     {
       title: "Business Impact & ROI",
-      tagline: "Measurable outcomes — with full employee privacy",
-      desc: "GOQii strengthens teams through engagement and participation while respecting individual confidentiality.",
+      tagline: "Clear outcomes with full employee privacy",
+      desc: "GOQii HealthEngage improves workforce participation and workplace energy while giving HR visibility into program adoption.",
       points: [
         "Higher program participation",
-        "Improved focus & daily energy",
-        "Reduced stress-related disruption",
-        "Clear HR visibility on adoption",
-        "Better alignment between wellbeing & performance"
+        "Improved focus and energy",
+        "Reduced stress disruption",
+        "HR visibility on adoption",
+        "Better alignment between people and performance"
       ],
       icon: <TrendingUp className="text-emerald-600" size={32} strokeWidth={1.5} />,
       color: "bg-gradient-to-br from-emerald-50 to-emerald-100/50"
@@ -1015,131 +1039,6 @@ const Experience = () => {
   );
 };
 
-const GamificationSection = () => {
-  const points = [
-    "Participation-led challenges that are easy to join",
-    "Points and milestones that recognize regular involvement",
-    "Rewards aligned with healthy routines and positive habits",
-    "Inclusive design suitable for all roles, ages, and fitness levels",
-    "No forced competition or public comparisons"
-  ];
-
-  return (
-    <section className="py-16 md:py-24 bg-white border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-4xl font-bold text-slate-900 mb-6">Gamification & Rewards</h2>
-            <h3 className="text-xl font-semibold text-blue-600 mb-6">Encouraging Participation Through Everyday Motivation</h3>
-            <p className="text-lg text-slate-600 leading-relaxed mb-6">
-              GOQii HealthEngage uses light gamification and meaningful rewards to encourage regular participation — making everyday actions more engaging without creating pressure or unhealthy competition.
-            </p>
-            <p className="text-lg text-slate-600 leading-relaxed mb-10">
-              Rather than focusing on winners or rankings, the approach is designed to recognize consistency, effort, and involvement across the workforce.
-            </p>
-            
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 mb-8">
-              <h4 className="text-xl font-bold text-slate-900 mb-6">How It Works</h4>
-              <ul className="space-y-4">
-                {points.map((point, idx) => (
-                  <motion.li 
-                    key={idx} 
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.1 }}
-                    className="flex items-start gap-3 text-slate-700"
-                  >
-                    <CheckCircle className="text-blue-500 shrink-0 mt-1" size={20} />
-                    <span>{point}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-blue-100 rounded-[3rem] transform translate-x-4 translate-y-4 -z-10"></div>
-            <div className="bg-white rounded-[3rem] border border-slate-100 shadow-xl relative overflow-hidden flex flex-col h-full">
-              <div className="h-64 w-full relative">
-                <img 
-                  src="https://appcdn.goqii.com/storeimg/62016_1772205315.png" 
-                  alt="Gamification in Workplace" 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
-                
-                {/* Sequential Badges */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.6 }}
-                  className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2"
-                >
-                  <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                  <span className="text-xs font-bold text-slate-900">7-Day Streak</span>
-                </motion.div>
-                
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.8 }}
-                  className="absolute bottom-16 left-12 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2"
-                >
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  <span className="text-xs font-bold text-slate-900">Team Goal Met</span>
-                </motion.div>
-              </div>
-              <div className="p-10 relative bg-white flex-1">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-10"></div>
-                <motion.div 
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mb-8 -mt-16 relative z-10 shadow-lg shadow-amber-500/20 border-4 border-white"
-                >
-                  <Gift size={28} />
-                  <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none scale-110" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="6" className="text-amber-200/50" />
-                    <motion.circle 
-                      cx="50" cy="50" r="46" fill="none" stroke="currentColor" strokeWidth="6" className="text-amber-500"
-                      strokeDasharray="289"
-                      initial={{ strokeDashoffset: 289 }}
-                      whileInView={{ strokeDashoffset: 289 * 0.25 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.5, delay: 0.6, ease: "easeOut" }}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </motion.div>
-                <h4 className="text-2xl font-bold text-slate-900 mb-4">Designed for Workplaces</h4>
-                <p className="text-lg text-slate-600 leading-relaxed">
-                  Gamification in GOQii HealthEngage is built to fit naturally into work life — motivating employees quietly and consistently, while helping organizations drive sustained participation across programs.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const HowItWorks = () => {
   const steps = [
     { 
@@ -1165,18 +1064,45 @@ const HowItWorks = () => {
   return (
     <section className="py-16 md:py-24 bg-slate-900 text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-10 md:mb-16">How GOQii Comes Together in Three Steps</h2>
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold mb-10 md:mb-16"
+        >
+          How GOQii Comes Together in Three Steps
+        </motion.h2>
         <div className="grid md:grid-cols-3 gap-12 relative">
-          <div className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-slate-800 z-0"></div>
+          <motion.div 
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
+            className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-slate-800 z-0 origin-left"
+          />
           {steps.map((step, idx) => (
-            <div key={idx} className="relative z-10">
-              <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold mb-8 shadow-2xl">
+            <motion.div 
+              key={idx} 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: idx * 0.2 }}
+              className="relative z-10"
+            >
+              <motion.div 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.2 + idx * 0.2, type: "spring" }}
+                className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold mb-8 shadow-2xl"
+              >
                 {step.num}
-              </div>
+              </motion.div>
               <h3 className="text-2xl font-bold mb-2">{step.title}</h3>
               <p className="text-blue-400 font-semibold mb-4 leading-tight">{step.tagline}</p>
               <p className="text-slate-400 text-lg leading-relaxed">{step.desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -1186,12 +1112,18 @@ const HowItWorks = () => {
 
 const EAPSection = () => (
   <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-100">
-    <div className="max-w-4xl mx-auto px-6 text-center">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="max-w-4xl mx-auto px-6 text-center"
+    >
       <h2 className="text-4xl font-bold text-slate-900 mb-8">Support That Fits Your Workplace</h2>
       <p className="text-2xl text-slate-600 leading-relaxed italic">
         "GOQii brings together employee assistance, everyday activities, and human support into one simple experience — making it easier for employees to seek help and for organizations to offer meaningful initiatives."
       </p>
-    </div>
+    </motion.div>
   </section>
 );
 
@@ -1252,13 +1184,13 @@ const BusinessImpactSection = () => {
   const impacts = [
     {
       title: "Higher Employee Participation",
-      stat: "30–50%",
+      stat: "60–75%",
       desc: "Participation grows steadily as programs fit naturally into everyday work.",
       color: "blue"
     },
     {
       title: "Improved Habit Consistency",
-      stat: "20–40%",
+      stat: "40–60%",
       desc: "Employees are more likely to maintain routines when actions remain simple and achievable.",
       color: "emerald"
     },
@@ -1430,24 +1362,38 @@ const FinalCTA = ({ onOpenDemo }: { onOpenDemo: () => void }) => (
       <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-400 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
     </div>
-    <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white"
+    >
       <h2 className="text-5xl font-bold mb-6">Let’s Build a Healthier Workforce</h2>
       <p className="text-2xl text-blue-100 mb-12">
         See how GOQii can support your employees and create a healthier, more engaged workplace.
       </p>
-      <button 
+      <motion.button 
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
         onClick={onOpenDemo}
-        className="bg-white text-blue-600 px-10 py-5 rounded-full text-xl font-bold hover:bg-blue-50 transition-all shadow-2xl"
+        className="bg-white text-blue-600 px-10 py-5 rounded-full text-xl font-bold hover:bg-blue-50 transition-colors shadow-2xl"
       >
         Request a Demo
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
   </section>
 );
 
 const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) => (
   <footer className="py-16 bg-slate-900 text-slate-400">
-    <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12"
+    >
       <div className="md:col-span-1">
         <div 
           className="flex items-center gap-3 mb-6 cursor-pointer"
@@ -1490,7 +1436,7 @@ const Footer = ({ setCurrentPage }: { setCurrentPage: (page: string) => void }) 
           <li><button onClick={() => setCurrentPage('contact-support')} className="hover:text-blue-400 transition-colors text-left">Contact Support</button></li>
         </ul>
       </div>
-    </div>
+    </motion.div>
     <div className="max-w-7xl mx-auto px-6 pt-16 mt-16 border-t border-slate-800 text-xs flex flex-col md:row items-center justify-between gap-4">
       <p>© {new Date().getFullYear()} GOQii Technologies Private Limited. All rights reserved.</p>
       <div className="flex gap-8">
@@ -1636,7 +1582,6 @@ export default function App() {
             <WhatWeDo />
             <HowGOQiiSupports />
             <Experience />
-            <GamificationSection />
             <HowItWorks />
             <EAPSection />
             <BusinessImpactSection />
