@@ -576,11 +576,17 @@ const Hero = ({ onOpenDemo }: { onOpenDemo: () => void }) => {
           loop
           playsInline
           poster="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=2070"
-          className="w-full h-full object-cover brightness-[0.98] mix-blend-multiply"
+          className="hidden md:block w-full h-full object-cover brightness-[0.98] mix-blend-multiply"
         >
           {/* Placeholder video matching the calm, enterprise-grade tone */}
           <source src="https://appcdn.goqii.com/storeimg/11261_1740985223.mp4" type="video/mp4" />
         </video>
+        <img 
+          src="https://appcdn.goqii.com/storeimg/53508_1773156258.jpg" 
+          alt="Workplace Health" 
+          className="block md:hidden w-full h-full object-cover brightness-[0.98] mix-blend-multiply"
+          referrerPolicy="no-referrer"
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent"></div>
       </div>
 
