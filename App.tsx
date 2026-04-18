@@ -1676,6 +1676,52 @@ const DemoAssistant = () => {
   );
 };
 
+const BookingModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 p-4 animate-in fade-in duration-200">
+      <div className="bg-white rounded-[2rem] w-full max-w-5xl h-[85vh] relative shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="flex items-center justify-between p-4 px-6 border-b border-slate-100 bg-white">
+          <h2 className="text-xl font-bold text-slate-800">Book a Demo</h2>
+          <button 
+            onClick={onClose} 
+            className="p-2 text-slate-400 hover:bg-slate-100 rounded-full hover:text-slate-800 transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+        
+        <div className="w-full flex-1 relative bg-slate-50/50">
+          <iframe 
+            src="https://calendar.app.google/Bkhgso1R991SQHQ6A"
+            width="100%" 
+            height="100%" 
+            style={{ border: "none" }}
+            title="Book a Demo"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FloatingDemoButton = ({ onOpen }: { onOpen: () => void }) => {
+  return (
+    <button 
+      onClick={onOpen}
+      className="fixed bottom-6 right-6 z-[60] bg-blue-600 text-white px-5 py-3 rounded-full font-semibold shadow-2xl hover:bg-blue-700 hover:scale-105 transition-all flex items-center gap-2 group ring-4 ring-blue-600/20"
+      aria-label="Book a Demo"
+    >
+      <span className="relative flex h-2 w-2 shrink-0">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+      </span>
+      <span>Book a Demo</span>
+    </button>
+  );
+};
+
 import { ContentPage } from './content';
 
 // --- App Root ---
@@ -1683,6 +1729,7 @@ import { ContentPage } from './content';
 export default function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
 
   const openDemo = () => setIsDemoModalOpen(true);
@@ -1690,6 +1737,9 @@ export default function App() {
   
   const openReport = () => setIsReportModalOpen(true);
   const hideReport = () => setIsReportModalOpen(false);
+
+  const openBookingModal = () => setIsBookingModalOpen(true);
+  const closeBookingModal = () => setIsBookingModalOpen(false);
 
   // Scroll to top when page changes
   useEffect(() => {
@@ -1718,9 +1768,10 @@ export default function App() {
         )}
       </main>
       <Footer setCurrentPage={setCurrentPage} />
-      <DemoAssistant />
+      <FloatingDemoButton onOpen={openBookingModal} />
       <DemoFormModal isOpen={isDemoModalOpen} onClose={hideDemo} />
       <ReportFormModal isOpen={isReportModalOpen} onClose={hideReport} />
+      <BookingModal isOpen={isBookingModalOpen} onClose={closeBookingModal} />
     </div>
   );
 }
